@@ -6,9 +6,10 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { Avatar } from "@/components/ui/Avatar";
 import { MessageBubble } from "./MessageBubble";
 import { MessageInput } from "./MessageInput";
-import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
+import { Phone, Video, MoreVertical, ArrowLeft, Check } from "lucide-react";
 import { GroupInfoModal } from "./GroupInfoModal";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 export function ChatPane() {
   const { user } = useAuthStore();
@@ -77,7 +78,7 @@ export function ChatPane() {
               ) : isGroup ? (
                 `${conversation.members.length} members`
               ) : (
-                (otherMember && useChatStore.getState().onlineUsers[otherMember.id] ?? otherMember?.is_online) ? "Online" : "Offline"
+                (otherMember && (useChatStore.getState().onlineUsers[otherMember.id] ?? otherMember?.is_online)) ? "Online" : "Offline"
               )}
             </span>
           </div>

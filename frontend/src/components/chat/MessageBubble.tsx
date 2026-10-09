@@ -85,7 +85,7 @@ export function MessageBubble({ message, showAvatar, senderName, senderColor, on
               isMine ? "bg-white/20 border-white/50" : "bg-black/20 border-signal-blue"
             )}>
               <span className="font-semibold block text-xs mb-0.5" style={{ color: isMine ? "white" : "#888" }}>
-                {message.reply_to.sender?.display_name || "message"}
+                { (message.reply_to as any).sender?.display_name || "message" }
               </span>
               {message.reply_to.body || "Attachment"}
             </div>

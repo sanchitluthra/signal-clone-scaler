@@ -74,7 +74,7 @@ export function MessageInput({ conversationId, replyTo, onCancelReply }: Message
       {replyTo && (
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-black/20">
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-signal-blue">Replying to {replyTo.sender?.display_name || "message"}</span>
+            <span className="text-xs font-semibold text-signal-blue">Replying to { (replyTo as any).sender?.display_name || "message" }</span>
             <span className="text-sm text-gray-400 truncate max-w-md">{replyTo.body || "Attachment"}</span>
           </div>
           <button onClick={onCancelReply} className="p-1 text-gray-400 hover:text-white transition-colors">
