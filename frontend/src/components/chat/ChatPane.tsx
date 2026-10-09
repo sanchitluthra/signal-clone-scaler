@@ -16,6 +16,8 @@ export function ChatPane() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [showGroupInfo, setShowGroupInfo] = useState(false);
 
+  const [replyTo, setReplyTo] = useState<any | null>(null);
+
   const conversation = conversations.find(c => c.id === activeConversationId);
   const conversationMessages = activeConversationId ? (messages[activeConversationId] || []) : [];
 
@@ -63,7 +65,12 @@ export function ChatPane() {
             className={cn("flex flex-col", isGroup && myMember && "cursor-pointer hover:opacity-80 transition-opacity")}
             onClick={() => isGroup && myMember && setShowGroupInfo(true)}
           >
-            <span className="font-semibold text-white tracking-tight">{displayName}</span>
+            <span className="font-semibold text-white tracking-tight flex items-center space-x-2">
+              <span>{displayName}</span>
+              {conversation.disappearing_seconds > 0 && (
+                <span className="text-gray-400" title="Disappearing Messages Active">⏱️</span>
+              )}
+            </span>
             <span className="text-[13px] text-gray-400">
               {isSomeoneTyping ? (
                 <span className="text-signal-blue italic animate-pulse">typing...</span>
@@ -83,9 +90,47 @@ export function ChatPane() {
           <button onClick={() => window.alert("Voice/Video calls coming soon!")} className="p-2.5 hover:bg-white/10 rounded-full transition-colors hidden sm:block">
             <Phone className="w-5 h-5" />
           </button>
-          <button className="p-2.5 hover:bg-white/10 rounded-full transition-colors">
-            <MoreVertical className="w-5 h-5" />
-          </button>
+          
+          <div className="relative">
+            <button 
+              onClick={() => {
+                const el = document.getElementById("chat-menu");
+                if (el) el.classList.toggle("hidden");
+              }}
+              className="p-2.5 hover:bg-white/10 rounded-full transition-colors"
+            >
+              <MoreVertical className="w-5 h-5" />
+            </button>
+            <div id="chat-menu" className="hidden absolute right-0 mt-2 w-56 bg-[#2a2a2a] border border-white/10 rounded-lg shadow-xl z-50 py-1">
+              <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Disappearing Messages</div>
+              {[
+                { label: "Off", value: 0 },
+                { label: "5 minutes", value: 300 },
+                { label: "1 hour", value: 3600 },
+                { label: "1 day", value: 86400 },
+                { label: "1 week", value: 604800 },
+              ].map(opt => (
+                <button
+                  key={opt.value}
+                  onClick={async () => {
+                    document.getElementById("chat-menu")?.classList.add("hidden");
+                    try {
+                      await api.patch(`/conversations/${conversation.id}`, { disappearing_seconds: opt.value });
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                  className={cn(
+                    "w-full text-left px-4 py-2 text-sm hover:bg-white/5 transition-colors flex items-center justify-between",
+                    conversation.disappearing_seconds === opt.value ? "text-signal-blue" : "text-gray-300"
+                  )}
+                >
+                  {opt.label}
+                  {conversation.disappearing_seconds === opt.value && <Check className="w-4 h-4" />}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -115,6 +160,7 @@ export function ChatPane() {
                 showAvatar={showAvatar}
                 senderName={sender?.display_name || sender?.phone}
                 senderColor={sender?.avatar_color}
+                onReply={(m) => setReplyTo(m)}
               />
             );
           })
@@ -137,7 +183,11 @@ export function ChatPane() {
 
       {/* Input Area */}
       {myMember ? (
-        <MessageInput conversationId={conversation.id} />
+        <MessageInput 
+          conversationId={conversation.id} 
+          replyTo={replyTo}
+          onCancelReply={() => setReplyTo(null)}
+        />
       ) : (
         <div className="p-4 bg-[#1e1e1e] border-t border-white/5 text-center text-gray-400 text-sm">
           You can no longer send messages to this group.

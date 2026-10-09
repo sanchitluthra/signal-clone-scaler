@@ -49,7 +49,7 @@ interface ChatState {
   fetchConversations: () => Promise<void>;
   setActiveConversation: (id: number | null) => void;
   fetchMessages: (conversationId: number) => Promise<void>;
-  sendMessage: (conversationId: number, body: string) => Promise<void>;
+  sendMessage: (conversationId: number, body: string, replyToId?: number, attachmentId?: number) => Promise<void>;
   sendTyping: (conversationId: number, isTyping: boolean) => void;
   markAsRead: (conversationId: number, upToMessageId: number) => void;
   
@@ -62,6 +62,8 @@ interface ChatState {
   handleReceiptUpdate: (data: any) => void;
   handleTypingStatus: (data: any) => void;
   handlePresenceUpdate: (data: any) => void;
+  handleMessageUpdated: (msg: Message) => void;
+  handleMessagesDeleted: (data: any) => void;
   
   // Contacts and Groups
   contacts: any[];
@@ -127,9 +129,13 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }
   },
 
-  sendMessage: async (conversationId, body) => {
+  sendMessage: async (conversationId, body, replyToId, attachmentId) => {
     try {
-      const msg = await api.post(`/conversations/${conversationId}/messages`, { body });
+      const msg = await api.post(`/conversations/${conversationId}/messages`, { 
+        body,
+        reply_to_id: replyToId,
+        attachment_id: attachmentId 
+      });
       set((state) => {
         const convMsgs = state.messages[conversationId] || [];
         const nextMessages = { ...state.messages };
@@ -191,6 +197,12 @@ export const useChatStore = create<ChatState>((set, get) => ({
             break;
           case "presence":
             get().handlePresenceUpdate(data);
+            break;
+          case "message_updated":
+            get().handleMessageUpdated(data.message);
+            break;
+          case "messages_deleted":
+            get().handleMessagesDeleted(data);
             break;
           case "conversation_changed":
             get().fetchConversations();
@@ -305,6 +317,38 @@ export const useChatStore = create<ChatState>((set, get) => ({
         [data.user_id]: data.is_online
       }
     }));
+  },
+
+  handleMessageUpdated: (msg) => {
+    set((state) => {
+      const convMsgs = state.messages[msg.conversation_id];
+      if (!convMsgs) return state;
+      const idx = convMsgs.findIndex(m => m.id === msg.id);
+      if (idx === -1) return state;
+      
+      const updatedMessages = [...convMsgs];
+      updatedMessages[idx] = msg;
+      
+      return {
+        messages: { ...state.messages, [msg.conversation_id]: updatedMessages }
+      };
+    });
+  },
+
+  handleMessagesDeleted: (data) => {
+    const { conversation_id, message_ids } = data;
+    const idsSet = new Set(message_ids);
+    set((state) => {
+      const convMsgs = state.messages[conversation_id];
+      if (!convMsgs) return state;
+      
+      return {
+        messages: {
+          ...state.messages,
+          [conversation_id]: convMsgs.filter(m => !idsSet.has(m.id))
+        }
+      };
+    });
   },
 
   fetchContacts: async () => {
