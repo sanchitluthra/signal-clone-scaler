@@ -2,8 +2,8 @@
 
 A real-time messaging application clone featuring a custom UI, WebSocket integration, and a high-performance FastAPI backend.
 
-*(Add your main application screenshot here)*
-![Main Chat Interface](./screenshots/main.png)
+
+(<img width="1278" height="789" alt="Screenshot 2026-10-09 at 2 34 25 PM" src="https://github.com/user-attachments/assets/ef2ad7a4-76e0-4c77-92a5-304034899b06" />
 
 ## 🚀 Features
 
@@ -20,8 +20,8 @@ A real-time messaging application clone featuring a custom UI, WebSocket integra
 - **Media Attachments**: Send and receive images and files.
 - **Disappearing Messages**: Set self-destruct timers for conversations.
 
-*(Add a screenshot showing the bonus features here - e.g., a message with a reaction, an image attachment, and a reply)*
-![Bonus Features](./screenshots/features.png)
+<img width="1470" height="801" alt="Screenshot 2026-10-09 at 2 33 16 PM" src="https://github.com/user-attachments/assets/a3ae55c9-f2d3-4b4a-b757-3b8534498cf8" />
+
 
 ## 💻 Tech Stack
 
@@ -65,3 +65,6 @@ npm run dev
 ```
 
 The app will be running at `http://localhost:3000`.
+<img width="1462" height="800" alt="Screenshot 2026-10-09 at 2 33 58 PM" src="https://github.com/user-attachments/assets/83ef03e8-120c-440a-9f26-a139a9ebec69" />
+<img width="1470" height="801" alt="Screenshot 2026-10-09 at 2 33 40 PM" src="https://github.com/user-attachments/assets/e4869145-aba3-4488-9cf1-d451ad585ff2" />
+
