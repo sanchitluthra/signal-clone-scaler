@@ -30,14 +30,6 @@ USERS = [
 # Each chat is a script of (sender username, text, minutes ago[, extras]).
 # extras: {"reply": index of an earlier line, "react": {username: emoji}}
 DIRECT_CHATS = [
-    ("aarav", "priya", 2, [
-        ("priya", "Are we still on for dinner tonight?", 95),
-        ("aarav", "Yes! 8pm works?", 92),
-        ("priya", "Perfect. That new Thai place near the station?", 90, {"react": {"aarav": "👍"}}),
-        ("aarav", "I'll book a table for 4", 88),
-        ("priya", "Rohan said he might be late", 6),
-        ("priya", "Also can you bring the charger I left at your place 🙏", 4),
-    ]),
     ("aarav", "rohan", 0, [
         ("rohan", "Bro the photos from the trek came out insane", 1500),
         ("aarav", "Send them!!", 1495),
