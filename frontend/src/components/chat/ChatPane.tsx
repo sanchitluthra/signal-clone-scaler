@@ -70,7 +70,7 @@ export function ChatPane() {
               ) : isGroup ? (
                 `${conversation.members.length} members`
               ) : (
-                otherMember?.is_online ? "Online" : "Offline"
+                (otherMember && useChatStore.getState().onlineUsers[otherMember.id] ?? otherMember?.is_online) ? "Online" : "Offline"
               )}
             </span>
           </div>

@@ -41,6 +41,7 @@ interface ChatState {
   activeConversationId: number | null;
   messages: Record<number, Message[]>; // conversation_id -> messages
   typingUsers: Record<number, number[]>; // conversation_id -> user_ids
+  onlineUsers: Record<number, boolean>; // user_id -> is_online
   ws: WebSocket | null;
   isLoading: boolean;
   
@@ -60,6 +61,7 @@ interface ChatState {
   handleNewMessage: (msg: Message) => void;
   handleReceiptUpdate: (data: any) => void;
   handleTypingStatus: (data: any) => void;
+  handlePresenceUpdate: (data: any) => void;
   
   // Contacts and Groups
   contacts: any[];
@@ -76,6 +78,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   activeConversationId: null,
   messages: {},
   typingUsers: {},
+  onlineUsers: {},
   ws: null,
   isLoading: false,
   contacts: [],
@@ -186,6 +189,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
           case "typing":
             get().handleTypingStatus(data);
             break;
+          case "presence":
+            get().handlePresenceUpdate(data);
+            break;
           case "conversation_changed":
             get().fetchConversations();
             break;
@@ -290,6 +296,15 @@ export const useChatStore = create<ChatState>((set, get) => ({
         }
       };
     });
+  },
+
+  handlePresenceUpdate: (data) => {
+    set((state) => ({
+      onlineUsers: {
+        ...state.onlineUsers,
+        [data.user_id]: data.is_online
+      }
+    }));
   },
 
   fetchContacts: async () => {
