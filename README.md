@@ -38,6 +38,13 @@ A real-time messaging application clone featuring a custom UI, WebSocket integra
 - **Rohan Verma:** `+15550000003` (Use this for Browser 2 to test chat)
 - **OTP for all accounts:** `123456`
 
+## 📝 Assumptions / Mocked Data / Notes
+
+To help you easily test the application, the following data has been mocked:
+1. **Mocked OTP:** Real SMS verification is bypassed. Any valid phone number will accept **`123456`** as the OTP.
+2. **Pre-seeded Users:** The database is automatically seeded with dummy users to avoid empty states. We recommend testing by opening two different browsers (or one normal and one incognito window) and logging in with the two numbers provided above.
+3. **Database Reset:** The application uses an ephemeral SQLite database on Render. This means the database automatically resets to a clean state upon every new deployment, ensuring a fresh environment for testing.
+
 ## 🛠️ Local Setup Instructions
 
 ### 1. Backend Setup
