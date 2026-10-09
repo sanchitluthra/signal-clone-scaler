@@ -15,9 +15,12 @@ export function MessageInput({ conversationId, replyTo, onCancelReply }: Message
   const [content, setContent] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [attachment, setAttachment] = useState<any | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { sendMessage, sendTyping } = useChatStore();
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🙏", "🔥", "✨", "💯", "✅", "🎉", "👀", "🤔", "😅", "😎", "🙌"];
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
@@ -106,10 +109,42 @@ export function MessageInput({ conversationId, replyTo, onCancelReply }: Message
       )}
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="p-3 flex items-end space-x-2">
-        <button type="button" className="p-2.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors shrink-0">
-          <Smile className="w-6 h-6" />
-        </button>
+      <form onSubmit={handleSubmit} className="p-3 flex items-end space-x-2 relative">
+        <div className="relative">
+          <button 
+            type="button" 
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            className="p-2.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors shrink-0"
+          >
+            <Smile className="w-6 h-6" />
+          </button>
+          
+          {showEmojiPicker && (
+            <div className="absolute bottom-full left-0 mb-2 p-2 bg-[#2a2a2a] border border-white/10 rounded-xl shadow-2xl z-50 w-64">
+              <div className="flex justify-between items-center mb-2 px-1">
+                <span className="text-xs font-semibold text-gray-400">Emojis</span>
+                <button type="button" onClick={() => setShowEmojiPicker(false)} className="text-gray-400 hover:text-white">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {EMOJIS.map(emoji => (
+                  <button 
+                    key={emoji}
+                    type="button"
+                    onClick={() => {
+                      setContent(prev => prev + emoji);
+                      setShowEmojiPicker(false);
+                    }}
+                    className="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded text-lg transition-transform hover:scale-110"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
         
         <input 
           type="file" 

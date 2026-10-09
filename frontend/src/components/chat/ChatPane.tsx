@@ -106,6 +106,7 @@ export function ChatPane() {
               <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Disappearing Messages</div>
               {[
                 { label: "Off", value: 0 },
+                { label: "30 seconds", value: 30 },
                 { label: "5 minutes", value: 300 },
                 { label: "1 hour", value: 3600 },
                 { label: "1 day", value: 86400 },
