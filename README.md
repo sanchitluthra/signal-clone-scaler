@@ -3,7 +3,7 @@
 A real-time messaging application clone featuring a custom UI, WebSocket integration, and a high-performance FastAPI backend.
 
 *(Add your main application screenshot here)*
-`![Main Chat Interface](./screenshots/main.png)`
+![Main Chat Interface](./screenshots/main.png)
 
 ## 🚀 Features
 
@@ -21,7 +21,7 @@ A real-time messaging application clone featuring a custom UI, WebSocket integra
 - **Disappearing Messages**: Set self-destruct timers for conversations.
 
 *(Add a screenshot showing the bonus features here - e.g., a message with a reaction, an image attachment, and a reply)*
-`![Bonus Features](./screenshots/features.png)`
+![Bonus Features](./screenshots/features.png)
 
 ## 💻 Tech Stack
 
@@ -34,8 +34,9 @@ A real-time messaging application clone featuring a custom UI, WebSocket integra
 - **Backend API:** [https://signal-clone-scaler-r0pq.onrender.com/api](https://signal-clone-scaler-r0pq.onrender.com/api)
 
 **Demo Login Instructions:**
-- **Phone Number:** `+15550000001` (or any number ending in 1-8)
-- **OTP:** `123456`
+- **Aarav Mehta:** `+15550000001` (Use this for Browser 1)
+- **Rohan Verma:** `+15550000003` (Use this for Browser 2 to test chat)
+- **OTP for all accounts:** `123456`
 
 ## 🛠️ Local Setup Instructions
 
